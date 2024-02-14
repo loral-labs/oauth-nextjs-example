@@ -17,4 +17,5 @@ model User {
   loralRefreshToken String?
   loralExpiresAt    DateTime?
   loralNonce        String?
+  loralScopes       String    @default("")
 }

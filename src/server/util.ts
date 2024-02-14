@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { db } from "@/server/db";
 import {
   OAUTH_CLIENT_ID,
   OAUTH_CLIENT_SECRET,
-  LORAL_API,
   SERVER_SLUG,
 } from "@/server/api/routers/loral";
 import axios from "axios";
@@ -43,5 +44,22 @@ export async function getAccessToken(userId: number) {
     params,
     config,
   );
-  console.log(response.data);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to refresh token");
+  }
+
+  await db.user.update({
+    where: {
+      id: user.id,
+    },
+    data: {
+      loralAccessToken: response.data.access_token,
+      loralRefreshToken: response.data.refresh_token,
+      loralExpiresAt: new Date(Date.now() + response.data.expires_in * 1000),
+      loralScopes: response.data.scope,
+    },
+  });
+
+  return response.data.access_token as string;
 }

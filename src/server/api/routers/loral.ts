@@ -2,6 +2,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import crypto from "crypto";
 import axios from "axios";
+import { getAccessToken } from "@/server/util";
 
 export const OAUTH_CLIENT_ID = "aca314fc-8db0-4840-857c-99343e7d40c7";
 export const SERVER_SLUG = "http://127.0.0.1:4000";
@@ -50,25 +51,7 @@ export const loralRouter = createTRPCRouter({
       return { redirect_uri: `${SERVER_SLUG}/oauth2/auth?${queryParams}` };
     }
 
-    return { token: user.loralAccessToken };
+    const freshAccessToken = await getAccessToken(user.id);
+    return { token: freshAccessToken };
   }),
-
-  // create: publicProcedure
-  //   .input(z.object({ name: z.string().min(1) }))
-  //   .mutation(async ({ ctx, input }) => {
-  //     // simulate a slow db call
-  //     await new Promise((resolve) => setTimeout(resolve, 1000));
-
-  //     return ctx.db.post.create({
-  //       data: {
-  //         name: input.name,
-  //       },
-  //     });
-  //   }),
-
-  // getLatest: publicProcedure.query(({ ctx }) => {
-  //   return ctx.db.post.findFirst({
-  //     orderBy: { createdAt: "desc" },
-  //   });
-  // }),
 });

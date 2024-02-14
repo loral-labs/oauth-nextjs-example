@@ -6,6 +6,22 @@ import { api } from "@/utils/api";
 export default function Home() {
   const authMutation = api.loral.auth.useMutation();
 
+  const authClickHandler = () => {
+    authMutation.mutate(undefined, {
+      onSuccess: (data) => {
+        if (data.redirect_uri) {
+          window.location.href = data.redirect_uri;
+          return;
+        }
+        if (data.token) {
+          alert(`Already authenticated. Access token printed to console.`);
+          console.log("Access Token: ", data.token);
+          return;
+        }
+      },
+    });
+  };
+
   return (
     <>
       <Head>
@@ -20,25 +36,15 @@ export default function Home() {
           </h1>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <div
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
-              onClick={() => {
-                authMutation.mutate(undefined, {
-                  onSuccess: (data) => {
-                    if (!data.redirect_uri) {
-                      return;
-                    }
-                    window.location.href = data.redirect_uri;
-                  },
-                });
-              }}
+              className="flex max-w-xs cursor-pointer flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+              onClick={() => authClickHandler()}
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
+              <h3 className="text-2xl font-bold">Auth to Loral →</h3>
               <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
+                Securely authenticated access to dozens of APIs.
               </div>
             </div>
-            <div className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20">
+            <div className="flex max-w-xs cursor-pointer flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20">
               <h3 className="text-2xl font-bold">Documentation →</h3>
               <div className="text-lg">
                 Learn more about Create T3 App, the libraries it uses, and how

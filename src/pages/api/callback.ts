@@ -34,7 +34,6 @@ export default async function callback(
   }
 
   // exchange the authorization code for an access and refresh token
-  // refresh token
   const params = new URLSearchParams({
     grant_type: "authorization_code",
     code: code as string,
@@ -73,10 +72,12 @@ export default async function callback(
         loralAccessToken: access_token,
         loralRefreshToken: refresh_token,
         loralExpiresAt: new Date(Date.now() + expires_in * 1000),
+        loralScopes: scope,
       },
     });
 
-    return res.status(200).json({ message: "Tokens stored successfully" });
+    // you can redirect (or set a query param) to for a success page here
+    res.redirect(`http://127.0.0.1:3000/`);
   } catch (e) {
     return res
       .status(500)
