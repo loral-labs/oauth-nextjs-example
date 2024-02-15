@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Head from "next/head";
 import div from "next/link";
 
@@ -41,7 +42,7 @@ export default function Home() {
             >
               <h3 className="text-2xl font-bold">Auth to Loral →</h3>
               <div className="text-lg">
-                Securely authenticated access to dozens of APIs.
+                Secure and authenticated access to dozens of APIs.
               </div>
             </div>
             <div className="flex max-w-xs cursor-pointer flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20">
