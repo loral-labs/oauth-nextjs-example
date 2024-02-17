@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import Head from "next/head";
-import div from "next/link";
 
 import { api } from "@/utils/api";
 

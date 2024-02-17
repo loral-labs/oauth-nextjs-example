@@ -5,10 +5,14 @@ import axios from "axios";
 import { getAccessToken } from "@/server/util";
 
 export const OAUTH_CLIENT_ID = "aca314fc-8db0-4840-857c-99343e7d40c7";
-export const SERVER_SLUG = "http://localhost:4000";
+export const SERVER_SLUG = "https://auth.loral.dev";
 export const REDIRECT_URI = "http://localhost:3000/api/callback";
 export const OAUTH_SCOPES = "openid offline_access kroger";
 export const LORAL_API = "http://localhost:8081";
+// export const SERVER_SLUG = "http://localhost:4000";
+// export const REDIRECT_URI = "http://localhost:3000/api/callback";
+// export const OAUTH_SCOPES = "openid offline_access kroger";
+// export const LORAL_API = "http://localhost:8081";
 // Secrets: ensure the secrets below are never exposed to the client. This example app is not secure.
 export const OAUTH_CLIENT_SECRET = "Bx5yUT0N5zBiexDGsMq4WO-wH";
 
