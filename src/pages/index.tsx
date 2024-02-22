@@ -5,6 +5,7 @@ import { api } from "@/utils/api";
 
 export default function Home() {
   const authMutation = api.loral.auth.useMutation();
+  const krogerSearchMutation = api.loral.searchKroger.useMutation();
 
   const authClickHandler = () => {
     authMutation.mutate(undefined, {
@@ -44,11 +45,20 @@ export default function Home() {
                 Secure and authenticated access to dozens of APIs.
               </div>
             </div>
-            <div className="flex max-w-xs cursor-pointer flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20">
-              <h3 className="text-2xl font-bold">Documentation →</h3>
+            <div
+              onClick={() => {
+                krogerSearchMutation.mutate(undefined, {
+                  onSuccess: (data) => {
+                    alert("Product Search Logged to Console");
+                    console.log(data);
+                  },
+                });
+              }}
+              className="flex max-w-xs cursor-pointer flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
+            >
+              <h3 className="text-2xl font-bold">Search Kroger Products →</h3>
               <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
+                A demo function that uses Kroger APIs to search for Milk
               </div>
             </div>
           </div>

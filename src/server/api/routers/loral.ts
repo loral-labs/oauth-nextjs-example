@@ -1,19 +1,14 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import crypto from "crypto";
-import axios from "axios";
 import { getAccessToken } from "@/server/util";
+import axios from "axios";
 
 export const OAUTH_CLIENT_ID = "aca314fc-8db0-4840-857c-99343e7d40c7";
 export const SERVER_SLUG = "https://auth.loral.dev";
 export const REDIRECT_URI = "http://localhost:3000/api/callback";
 export const OAUTH_SCOPES = "openid offline_access kroger";
-export const LORAL_API = "http://localhost:8081";
-
-// export const SERVER_SLUG = "http://localhost:4000";
-// export const REDIRECT_URI = "http://localhost:3000/api/callback";
-// export const OAUTH_SCOPES = "openid offline_access kroger";
-// export const LORAL_API = "http://localhost:8081";
-
+export const LORAL_API = "http://api.loral.dev";
 // Secrets: ensure the secrets below are never exposed to the client. This example app is not secure.
 export const OAUTH_CLIENT_SECRET = "Bx5yUT0N5zBiexDGsMq4WO-wH";
 
@@ -58,5 +53,24 @@ export const loralRouter = createTRPCRouter({
 
     const freshAccessToken = await getAccessToken(user.id);
     return { token: freshAccessToken };
+  }),
+  searchKroger: publicProcedure.mutation(async ({ ctx }) => {
+    const user = await ctx.db.user.findFirstOrThrow();
+
+    const token = await getAccessToken(user.id);
+
+    const queryParams = new URLSearchParams({
+      "filter.term": "milk",
+    });
+    const res = await axios.get(
+      `${LORAL_API}/kroger/execute/v1/products?${queryParams.toString()}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    const data = res.data;
+    return JSON.stringify(data);
   }),
 });
